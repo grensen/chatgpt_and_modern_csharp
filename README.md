@@ -58,7 +58,12 @@ object obj = 42;
 if (obj is int value && value > 0) Console.WriteLine("Positive integer");
 // 6. Switch expressions
 var dayOfWeek = DateTime.Today.DayOfWeek;
-var message = dayOfWeek switch { DayOfWeek.Monday => "It's Monday", DayOfWeek.Friday => "It's Friday", _ => "It's another day" };
+var message = dayOfWeek switch 
+{ 
+    DayOfWeek.Monday => "It's Monday", 
+    DayOfWeek.Friday => "It's Friday", 
+    _ => "It's another day" 
+};
 // 7. Using declarations
 using var stream = new FileStream("file.txt", FileMode.Open);
 // 8. Enhancement of interpolated verbatim strings
