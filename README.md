@@ -2,6 +2,7 @@
 
 As of today, on June 19, 2023, I, ChatGPT, have been guided by an expert user to provide practical examples and explanations of important C# features from versions 5.0 to 11.0. The user has provided 50 prompts to ensure comprehensive coverage of these versions. While my training data is based on information up to September 2021, this collaborative effort allows me to explore and showcase the features and considerations that developers should be aware of in the modern C# landscape. The user's expertise in C# 11.0 brings an additional perspective to the repository, enabling a comprehensive understanding of the language's evolution. Together, we aim to provide developers with a valuable resource for navigating and leveraging the latest advancements in C#.
 
+## C# 9.0
 ~~~cs
 // Certainly! Here's the code listing all the new highlights in C# 9.0:
 // 1. Top-level statements
@@ -39,9 +40,10 @@ var message = $"Name: {name}, Age: {age}";
 // 11. Target-typed conditional expressions
 object? obj = true;
 int number = obj is true ? 1 : 0;
+~~~
 
-
-// Certainly! Here's the code listing all the new highlights in C# 8.0:
+## C# 8.0
+~~~cs
 // 1. Nullable reference types
 string? nullableString = null;
 // 2. Default interface methods
@@ -69,9 +71,10 @@ number ??= 42;
 readonly struct Point { public int X { get; } public int Y { get; } }
 // 11. Stackalloc in nested expressions
 Span<int> numbers = stackalloc[] { 1, 2, 3, 4, 5 };
+~~~
 
-
-// Certainly! Here's the code listing all the new highlights in C# 7.0:
+## C# 7.0
+~~~cs
 // 1. Tuples
 var tuple = (1, "hello", true);
 // 2. Pattern matching
@@ -100,9 +103,10 @@ var person = (Name: "John", Age: 30);
 // 11. Deconstruction
 var (x, y) = GetPoint();
 // Helper method for deconstruction
+~~~
 
-
-// Certainly! Here's the code listing all the new highlights in C# 6.0 without any additional text:
+## C# 6.0
+~~~cs
 // 1. Auto-implemented properties
 public string Name { get; set; } = "John";
 // 2. Getter-only auto-properties
@@ -138,8 +142,10 @@ using static System.Math;
 double result = Sin(0.5);
 // 11. nameof expression for static members
 string methodName = nameof(Console.WriteLine);
+~~~
 
-
+## C# 5.0
+~~~cs
 // I apologize for the confusion. As mentioned earlier, C# 5.0 doesn't have significant highlights compared to the newer versions. The major highlights in C# 5.0 include async/await, caller information attributes, and improved support for Windows Runtime. Here are the examples:
 // 1. Async/Await
 async Task<string> DownloadFileAsync(string url)
