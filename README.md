@@ -4,7 +4,6 @@ As of today, on June 19, 2023, I, ChatGPT, have been guided by an expert user to
 
 ## C# 9.0
 ~~~cs
-// Certainly! Here's the code listing all the new highlights in C# 9.0:
 // 1. Top-level statements
 Console.WriteLine("Hello, World!");
 // 2. Records
@@ -49,7 +48,9 @@ string? nullableString = null;
 // 2. Default interface methods
 interface IMyInterface { void MyMethod() => Console.WriteLine("Default implementation"); }
 // 3. Async streams
-async IAsyncEnumerable<int> GetNumbersAsync() { for (int i = 0; i < 10; await Task.Delay(100)) yield return i++; }
+async IAsyncEnumerable<int> GetNumbersAsync() {
+    for (int i = 0; i < 10; await Task.Delay(100)) yield return i++;
+}
 // 4. Ranges and indices
 int[] numbers = { 1, 2, 3, 4, 5 };
 var slice = numbers[1..4];
@@ -151,7 +152,6 @@ string methodName = nameof(Console.WriteLine);
 
 ## C# 5.0
 ~~~cs
-// I apologize for the confusion. As mentioned earlier, C# 5.0 doesn't have significant highlights compared to the newer versions. The major highlights in C# 5.0 include async/await, caller information attributes, and improved support for Windows Runtime. Here are the examples:
 // 1. Async/Await
 async Task<string> DownloadFileAsync(string url)
 {
@@ -178,8 +178,117 @@ namespace MyNamespace
         }
     }
 }
-// Please note that C# has evolved significantly since version 5.0, and newer versions introduce more features and enhancements. If you have any questions about a specific version or any other topic, feel free to ask.
 ~~~
 
 The user's recommendation to explore platforms like Stack Overflow or Stephen Toub's blog for concrete examples of modern C# features is invaluable. Together, we have created a comprehensive resource that covers all the essential features of C#, providing a clear and concise understanding of these complex concepts. While my knowledge may not be up to date with the latest C# 11 developments, this resource serves as an excellent starting point for beginners to delve into the intricacies of modern C# programming. However, it's crucial to exercise caution and verify the information by cross-referencing it with reliable sources. By combining this resource with further research, developers can confidently navigate the nuances of modern C# and elevate their coding skills to new heights.
+
+## C# 10
+~~~cs
+// 1. Constant Interpolated Strings
+const string Name = "Alan";
+const string Designation = $"{Name} - Employee";
+// 2. Record Structs
+public record struct Point(int X, int Y);
+// 3. Improvements of Structure Types
+public record struct Person
+{
+    public string Name { get; init; } = string.Empty;
+}
+// 4. Custom Interpolated String Handlers
+public static class CustomStringHandler
+{
+    public static string HandleInterpolation(FormattableString formattableString) =>
+        $"Custom Handling: {formattableString.Format}";
+}
+// 5. Global Using Directives
+global using System;
+global using System.Collections.Generic;
+// 6. Implicit Global Usings
+<ImplicitUsings>enable</ImplicitUsings>
+// 7. Extended Property Patterns
+public record Person(string FirstName, string LastName, int Age);
+var person = new Person("Shekh", "Ali", 25);
+if (person is { FirstName: "Shekh", Age: > 18 })
+    Console.WriteLine("This person is over 18 years old");
+// 8. Sealed Modifier on ToString in Record Types
+public record Person
+{
+    public string Name { get; init; } = string.Empty;
+    public sealed override string ToString() => $"Name: {Name}";
+}
+// 9. Assignment and Declaration in the Same Deconstruction
+var articles = (new Article("Author", "Title"), new CodeMazeArticle("Author", "Title", "Comment"));
+var article = new Article("Another author", "Another title");
+(article, CodeMazeArticle codeMazeArticle) = articles;
+// 10. Lambda Improvements
+var lambda = [DebuggerStepThrough] () => "Hello world";
+// 11. Null Parameter Checking
+void ValidateMail(string email)
+{
+    ArgumentNullException.ThrowIfNull(email);
+    Console.WriteLine($"Email : {email}");
+}
+// 12. Mutable Property of Record Type
+public record Person
+{
+    public string Name { get; init; } = string.Empty;
+}
+~~~
+
+## C# 11
+~~~cs
+// 1. Required Members
+public class Person
+{
+    public required string Name { get; set; }
+    public required string Surname { get; set; }
+}
+// 2. Raw string literals
+string name = "Shehryar", surname = "Khan";
+string jsonString = $$"""{{""Name"": {{name}},""Surname"": {{surname}}}}""";
+// 3. UTF-8 string literals
+byte[] array = "Hello World";
+// 4. List Patterns
+var numbers = new[] { 1, 2, 3, 4 };
+Console.WriteLine(numbers is [1, 2, 3, 4]); // True
+Console.WriteLine(numbers is [1, 2, 4]); // False
+Console.WriteLine(numbers is [_, 2, _, 4]); // True
+Console.WriteLine(numbers is [.., 3, _]); // True
+Console.WriteLine(numbers is [_, >=2, _, _]); // True
+// 5. Newlines in string interpolation expressions
+int month = 5;
+string season = $"The season is {{month switch {{1 or 2 or 12 => ""winter"",
+    > 2 and < 6 => ""spring"", > 5 and < 9 => ""summer""
+, > 8 and < 12 => ""autumn"", _ => ""Unknown. Wrong month number""}}}}.";
+Console.WriteLine(season); // The season is spring.
+// 6. Auto-default structs
+public struct Person
+{
+    public string Name { get; set; }
+    public int Age { get; set; }
+}
+Person person = new() { Name = "John" };
+Console.WriteLine(person.Age); // Output: 0
+// 7. Pattern match Span<char> on a constant string
+if ("SK".AsSpan() is "SK")
+    Console.WriteLine("Hey, SK");
+// 8. Extended nameof scope
+public class MyAttr : Attribute
+{
+    public MyAttr([CallerArgumentExpression("paramName")] string paramName = "") { }
+}
+public class MyClass
+{
+    [MyAttr]
+    public void Method(int param, [MyAttr] int anotherParam) { }
+}
+// 9. An unsigned right-shift operator
+int n = -32;
+Console.WriteLine($"Before shift: bin = {Convert.ToString(n, 2), 32}, dec = {n}");
+int a = n >> 2;
+Console.WriteLine($"After >>: bin = {Convert.ToString(a, 2), 32}, dec = {a}");
+int b = n >>> 2;
+Console.WriteLine($"After >>>: bin = {Convert.ToString(b, 2), 32}, dec = {b}");
+~~~
+
 
