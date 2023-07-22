@@ -184,55 +184,111 @@ The user's recommendation to explore platforms like Stack Overflow or Stephen To
 
 ## C# 10
 ~~~cs
-// 1. Constant Interpolated Strings
-const string Name = "Alan";
-const string Designation = $"{Name} - Employee";
-// 2. Record Structs
-public record struct Point(int X, int Y);
-// 3. Improvements of Structure Types
+// 1. Record Structs
 public record struct Person
 {
-    public string Name { get; init; } = string.Empty;
+    public string FirstName { get; init; }
+    public string LastName { get; init; }
 }
-// 4. Custom Interpolated String Handlers
-public static class CustomStringHandler
+// 2. Improvements of Structure Types
+public struct Point
 {
-    public static string HandleInterpolation(FormattableString formattableString) =>
-        $"Custom Handling: {formattableString.Format}";
+    public int X { get; init; }
+    public int Y { get; init; }
 }
-// 5. Global Using Directives
+// 3. Interpolated String Handlers
+public class MyStringHandler : IInterpolatedStringHandler
+{
+    public void AppendLiteral(string s) { /* Implementation */ }
+    public void AppendFormatted<T>(T value) { /* Implementation */ }
+    public string GetStringAndRelease() { /* Implementation */ return string.Empty; }
+}
+// 4. Global Using Directives
 global using System;
 global using System.Collections.Generic;
-// 6. Implicit Global Usings
-<ImplicitUsings>enable</ImplicitUsings>
-// 7. Extended Property Patterns
-public record Person(string FirstName, string LastName, int Age);
-var person = new Person("Shekh", "Ali", 25);
-if (person is { FirstName: "Shekh", Age: > 18 })
-    Console.WriteLine("This person is over 18 years old");
-// 8. Sealed Modifier on ToString in Record Types
-public record Person
+global using System.Linq;
+// 5. File-Scoped Namespace Declaration
+namespace MyApp;
+// 6. Extended Property Patterns
+public class Person
 {
-    public string Name { get; init; } = string.Empty;
-    public sealed override string ToString() => $"Name: {Name}";
+    public string FirstName { get; init; }
+    public string LastName { get; init; }
 }
-// 9. Assignment and Declaration in the Same Deconstruction
-var articles = (new Article("Author", "Title"), new CodeMazeArticle("Author", "Title", "Comment"));
-var article = new Article("Another author", "Another title");
-(article, CodeMazeArticle codeMazeArticle) = articles;
-// 10. Lambda Improvements
-var lambda = [DebuggerStepThrough] () => "Hello world";
-// 11. Null Parameter Checking
-void ValidateMail(string email)
+public string GetFullName(Person person) => person switch
 {
-    ArgumentNullException.ThrowIfNull(email);
-    Console.WriteLine($"Email : {email}");
-}
-// 12. Mutable Property of Record Type
-public record Person
+    { FirstName: "John" or "Jane", LastName: "Doe" } => "Full Name: John/Jane Doe",
+    { FirstName: var firstName, LastName: var lastName } => $"Full Name: {firstName} {lastName}",
+};
+// 7. Improvements on Lambda Expressions
+Func<int, int> square = x => x * x;
+// 8. Allow Const Interpolated Strings
+const int age = 30;
+string info = $"My age is {age}";
+// 9. Record Types Can Seal ToString()
+public record Person(string FirstName, string LastName)
 {
-    public string Name { get; init; } = string.Empty;
+    public override string ToString() => $"{FirstName} {LastName}";
 }
+// 10. Improved Definite Assignment
+public class MyClass
+{
+    public void Display(int x)
+    {
+        int y;
+        if (x == 0)
+            y = 10;
+        Console.WriteLine(y); // Error: Use of unassigned local variable 'y'
+    }
+}
+// 11. Allow Both Assignment and Declaration in the Same Deconstruction
+(int x, int y) = (10, 20);
+// 12. Allow AsyncMethodBuilder Attribute on Methods
+public class MyAsyncMethodBuilder : IAsyncMethodBuilder
+{
+    public void Start<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : IAsyncStateMachine
+    {
+        throw new NotImplementedException();
+    }
+    public void SetStateMachine(IAsyncStateMachine stateMachine)
+    {
+        throw new NotImplementedException();
+    }
+    public void SetResult()
+    {
+        throw new NotImplementedException();
+    }
+    public void SetException(Exception exception)
+    {
+        throw new NotImplementedException();
+    }
+}
+// 13. CallerArgumentExpression Attribute
+public class MyAttr : Attribute
+{
+    public MyAttr([CallerArgumentExpression("paramName")] string paramName = "") { }
+}
+public class MyClass
+{
+    [MyAttr]
+    public void Method(int param, [MyAttr] int anotherParam) { }
+}
+// 14. Enhanced #line Pragma
+#line 42
+// 15. Warning Wave 6
+#nullable enable
+class WarningWave6
+{
+    public static void Main()
+    {
+        string? name = null;
+        if (name is null)
+        {
+            Console.WriteLine("Name is null!");
+        }
+    }
+}
+
 ~~~
 
 ## C# 11
@@ -243,36 +299,34 @@ public class Person
     public required string Name { get; set; }
     public required string Surname { get; set; }
 }
-// 2. Raw string literals
+// 2. Raw String Literals
 string name = "Shehryar", surname = "Khan";
 string jsonString = $$"""{{""Name"": {{name}},""Surname"": {{surname}}}}""";
-// 3. UTF-8 string literals
+// 3. UTF-8 String Literals
 byte[] array = "Hello World";
 // 4. List Patterns
 var numbers = new[] { 1, 2, 3, 4 };
-Console.WriteLine(numbers is [1, 2, 3, 4]); // True
-Console.WriteLine(numbers is [1, 2, 4]); // False
-Console.WriteLine(numbers is [_, 2, _, 4]); // True
-Console.WriteLine(numbers is [.., 3, _]); // True
-Console.WriteLine(numbers is [_, >=2, _, _]); // True
-// 5. Newlines in string interpolation expressions
+Console.WriteLine(numbers is [1, 2, 3, 4]);
+Console.WriteLine(numbers is [1, 2, 4]);
+Console.WriteLine(numbers is [_, 2, _, 4]);
+Console.WriteLine(numbers is [.., 3, _]);
+Console.WriteLine(numbers is [_, >=2, _, _]);
+// 5. Newlines in String Interpolation Expressions
 int month = 5;
-string season = $"The season is {{month switch {{1 or 2 or 12 => ""winter"",
-    > 2 and < 6 => ""spring"", > 5 and < 9 => ""summer""
-, > 8 and < 12 => ""autumn"", _ => ""Unknown. Wrong month number""}}}}.";
-Console.WriteLine(season); // The season is spring.
-// 6. Auto-default structs
+string season = $"The season is {{month switch {{1 or 2 or 12 => ""winter"", > 2 and < 6 => ""spring"", > 5 and < 9 => ""summer"", > 8 and < 12 => ""autumn"", _ => ""Unknown. Wrong month number""}}}}.";
+Console.WriteLine(season);
+// 6. Auto-default Structs
 public struct Person
 {
     public string Name { get; set; }
     public int Age { get; set; }
 }
 Person person = new() { Name = "John" };
-Console.WriteLine(person.Age); // Output: 0
-// 7. Pattern match Span<char> on a constant string
+Console.WriteLine(person.Age);
+// 7. Pattern Match Span<char> on a Constant String
 if ("SK".AsSpan() is "SK")
     Console.WriteLine("Hey, SK");
-// 8. Extended nameof scope
+// 8. Extended Nameof Scope
 public class MyAttr : Attribute
 {
     public MyAttr([CallerArgumentExpression("paramName")] string paramName = "") { }
@@ -282,13 +336,67 @@ public class MyClass
     [MyAttr]
     public void Method(int param, [MyAttr] int anotherParam) { }
 }
-// 9. An unsigned right-shift operator
+// 9. An Unsigned Right-Shift Operator
 int n = -32;
 Console.WriteLine($"Before shift: bin = {Convert.ToString(n, 2), 32}, dec = {n}");
 int a = n >> 2;
 Console.WriteLine($"After >>: bin = {Convert.ToString(a, 2), 32}, dec = {a}");
 int b = n >>> 2;
 Console.WriteLine($"After >>>: bin = {Convert.ToString(b, 2), 32}, dec = {b}");
+// 10. File-Local Types
+file class FileLocal
+{
+    public string Name { get; set; } = "File Local";
+}
+// 11. Generic Attributes
+public class FooAttribute<T>:Attribute
+{
+    public T FooProperty {get;set;}
+    public FooAttribute<T>(T fooValue) => FooProperty = fooValue;
+}
+public class Bar
+{
+    [Foo<String>]
+    public string Name{get;set;}
+}
+// 12. Generic Math Support
+public interface IMath<T>
+{
+    public static abstract T Add(T a, T b);
+    public static abstract T Multiply(T a, T b);
+}
+// 13. Improved Method Group Conversion to Delegate
+public delegate void MyDelegate(string s);
+public class MyClass
+{
+    public void Method(string s) { }
+    public void Test()
+    {
+        MyDelegate myDelegate = Method;
+    }
+}
+// 14. Ref Fields and Scoped Ref
+public class RefExample
+{
+    private int[] arr = { 1, 2, 3 };
+    public ref int GetElement(int index)
+    {
+        return ref arr[index];
+    }
+}
+// 15. Warning Wave 7
+#nullable enable
+class WarningWave7
+{
+    public static void Main()
+    {
+        string? name = null;
+        if (name is null)
+        {
+            Console.WriteLine("Name is null!");
+        }
+    }
+}
 ~~~
 
 
