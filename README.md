@@ -1,6 +1,8 @@
 # Modern C# Programming with ChatGPT
 
-As of today, on June 19, 2023, I, ChatGPT, have been guided by an expert user to provide practical examples and explanations of important C# features from versions 5.0 to 11.0. The user has provided 50 prompts to ensure comprehensive coverage of these versions. While my training data is based on information up to September 2021, this collaborative effort allows me to explore and showcase the features and considerations that developers should be aware of in the modern C# landscape. The user's expertise in C# 11.0 brings an additional perspective to the repository, enabling a comprehensive understanding of the language's evolution. Together, we aim to provide developers with a valuable resource for navigating and leveraging the latest advancements in C#.
+
+> As of today, on June 19, 2023, I, ChatGPT, have been guided by an ~expert~ user to provide practical examples and explanations of important C# features from versions 5.0 to 12.0. The user has provided 50 prompts to ensure comprehensive coverage of these versions.  While my training data is based on information up to September 2021, this collaborative effort allows me to explore and showcase the features and considerations that developers should be aware of in the modern C# landscape. The user's expertise in C# 11.0 brings an  additional perspective to the repository, enabling a comprehensive understanding of the language's evolution. Together, we aim to provide developers with a valuable resource for navigating and leveraging the latest advancements in C#.
+
 
 ## C# 9.0
 ~~~cs
@@ -180,7 +182,13 @@ namespace MyNamespace
 }
 ~~~
 
-The user's recommendation to explore platforms like Stack Overflow or Stephen Toub's blog for concrete examples of modern C# features is invaluable. Together, we have created a comprehensive resource that covers all the essential features of C#, providing a clear and concise understanding of these complex concepts. While my knowledge may not be up to date with the latest C# 11 developments, this resource serves as an excellent starting point for beginners to delve into the intricacies of modern C# programming. However, it's crucial to exercise caution and verify the information by cross-referencing it with reliable sources. By combining this resource with further research, developers can confidently navigate the nuances of modern C# and elevate their coding skills to new heights.
+> The user's recommendation to explore platforms like Stack Overflow or Stephen Toub's blog for concrete examples of modern C# features is invaluable. Together, we have created a comprehensive resource that covers all the essential features of C#, providing a clear and concise understanding of these complex concepts. While my knowledge may not be up to date with the latest C# 11 developments, this resource serves as an excellent starting point for beginners to delve into the intricacies of modern C# programming. However, it's crucial to exercise caution and verify the information by cross-referencing it with reliable sources. By combining this resource with further research, developers can confidently navigate the nuances of modern C# and elevate their coding skills to new heights.
+
+---
+
+Now me, the user. The result of getting ChatGPT to deal with current issues in a meaningful way is often not effective. Nevertheless, I've tried to squeeze the new features for each version into a compact list as best I can. The feature lists can help to make the extensive C# language, which is now in its 12th version, easier to understand. Nevertheless, it is still necessary to gather more information and look for further examples of interesting features and how we can use them. The lists were all created with ChatGPT, but it only knows the versions up to C# 9, so I had to feed ChatGPT with a lot of information about the new features first, so that the features of C# 10, 11 and the current version 12 could be created.
+
+The best way to learn modern C# is to check out Stephen Toub's .NET guides: [Performance Improvements in .NET 8](https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-8/), [Performance Improvements in .NET 7](https://devblogs.microsoft.com/dotnet/performance_improvements_in_net_7/), [Performance Improvements in .NET 6](https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-6/), [Performance Improvements in .NET 5](https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-5/)
 
 ## C# 10
 ~~~cs
@@ -396,6 +404,61 @@ class WarningWave7
             Console.WriteLine("Name is null!");
         }
     }
+}
+~~~
+
+## C# 12
+
+~~~cs
+// 1. Primary Constructors for Non-Record Classes and Structs
+public class EmployeeService(Repository repository)
+{
+    public Employee GetEmployeeById(int id)
+    {
+        return repository.GetEmployee(id);
+    }
+}
+// 2. Collection Expressions
+int[] a = [1, 2, 3, 4, 5, 6, 7, 8];
+List<string> b = ["one", "two", "three"];
+Span<char> c = ['a', 'b', 'c', 'd', 'e', 'f', 'h', 'i'];
+int[][] twoD = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
+int[] single = [..row0, ..row1, ..row2];
+// 3. Inline Arrays
+[System.Runtime.CompilerServices.InlineArray(10)]
+public struct Buffer
+{
+    private int _element0;
+}
+var buffer = new Buffer();
+for (int i = 0; i < 10; i++)
+    buffer[i] = i;
+foreach (var i in buffer)
+    Console.WriteLine(i);
+// 4. Optional Parameters in Lambda Expressions
+var CalculateArea = (int length, int width = 10) => length * width;
+var area = CalculateArea(20, 15);
+var area2 = CalculateArea(20);
+// 5. ref readonly Parameters
+// Example usage in API, e.g., System.ReadOnlySpan<T>.ReadOnlySpan<T>(T).
+// 6. Alias Any Type
+using Measurement = (string Units, int Distance);
+using UnitsInt = int?;
+public void Calculation(Measurement measurement)
+{
+    // Method Body
+}
+// 7. Experimental Attribute
+[Experimental]
+public void NewFeature()
+{
+    // Implementation
+}
+// 8. Interceptors
+[Intercept]
+public void SomeMethod()
+{
+    // Modified behavior
 }
 ~~~
 
